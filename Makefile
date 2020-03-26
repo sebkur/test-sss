@@ -8,8 +8,8 @@ src/main.o
 
 CC  = /usr/bin/gcc
 DEPENDFILE = .depend
-CFLAGS  = -g -Wall
-LDFLAGS = -lm
+CFLAGS  = -g -Wall -I/tmp/sss/sss/
+LDFLAGS = -lm -lsss -L/tmp/sss/sss/
 
 test: $(OBJ)
 	$(CC) $(CFLAGS) -o $(BIN) $(OBJ) $(LDFLAGS)
@@ -18,7 +18,7 @@ test: $(OBJ)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 dep: $(SRC)
-	$(CC) -MM $(SRC) > $(DEPENDFILE)
+	$(CC) $(CFLAGS) -MM $(SRC) > $(DEPENDFILE)
 
 clean:
 	rm -f $(BIN) $(OBJ)
