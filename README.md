@@ -6,3 +6,4 @@ Also there's going to be some code on running the whole thing
 using JNA in [java](java):
 * [Getting Started](java/getting-started): a minimal example on using JNA as
   explained here: https://github.com/java-native-access/jna/blob/master/www/GettingStarted.md
+* [Sandbox](java/sandbox): a sandbox for testing JNA functionality
