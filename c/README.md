@@ -2,9 +2,8 @@
 
 Check out and build libsss:
 
-    mkdir -p /tmp/sss
-    cd /tmp/sss
-    git clone https://github.com/dsprenkels/sss.git
+    mkdir -p /tmp/sss && cd /tmp/sss
+    git clone --recursive https://github.com/dsprenkels/sss.git
     cd sss
     make
 
