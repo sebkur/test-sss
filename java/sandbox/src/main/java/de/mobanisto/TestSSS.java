@@ -30,7 +30,6 @@ public class TestSSS
 
 		int n = 3;
 		int k = 2;
-		byte[] shares = new byte[n * SHARE_LEN];
 
 		byte[] data = new byte[MLEN];
 		for (int i = 0; i < data.length; i++) {
@@ -39,12 +38,25 @@ public class TestSSS
 
 		printData(data);
 
+		byte[] shares = new byte[n * SHARE_LEN];
 		LibSSS.INSTANCE.sss_create_shares(shares, data, n, k);
+
 		for (int i = 0; i < n; i++) {
-			byte[] share = new byte[SHARE_LEN];
-			System.arraycopy(shares, i * SHARE_LEN, share, 0, SHARE_LEN);
+			byte[] share = getShare(shares, i);
 			printShare(share);
 		}
+
+		byte[] recovered = new byte[MLEN];
+		LibSSS.INSTANCE.sss_combine_shares(recovered, shares, 2);
+
+		printData(recovered);
+	}
+
+	private static byte[] getShare(byte[] shares, int i)
+	{
+		byte[] share = new byte[SHARE_LEN];
+		System.arraycopy(shares, i * SHARE_LEN, share, 0, SHARE_LEN);
+		return share;
 	}
 
 	private static void printData(byte[] data)
