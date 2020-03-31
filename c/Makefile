@@ -9,7 +9,7 @@ src/main.o
 CC  = /usr/bin/gcc
 DEPENDFILE = .depend
 CFLAGS  = -g -Wall -I/tmp/sss/sss/
-LDFLAGS = -lm -lsss -L/tmp/sss/sss/
+LDFLAGS = -lsss -L/tmp/sss/sss/
 
 test: $(OBJ)
 	$(CC) $(CFLAGS) -o $(BIN) $(OBJ) $(LDFLAGS)
