@@ -21,7 +21,7 @@ public class TestGetHostname
 		byte[] buffer = new byte[100];
 		CLibrary.INSTANCE.gethostname(buffer, buffer.length);
 		String string = Native.toString(buffer);
-		System.out.print(string);
+		System.out.println(string);
 	}
 
 }
