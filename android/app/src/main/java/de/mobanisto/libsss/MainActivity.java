@@ -7,10 +7,23 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.sun.jna.Library;
+import com.sun.jna.Native;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+  public interface CLibrary extends Library {
+
+    CLibrary INSTANCE = Native.load(("c"), CLibrary.class);
+
+    void printf(String format, Object... args);
+
+    void sprintf(byte[] buffer, String format, Object... args);
+
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState)
@@ -56,6 +69,14 @@ public class MainActivity extends AppCompatActivity {
       layout.addView(textView);
       textViewsSecrets.add(textView);
     }
+
+    // Interesting, printf doesn't appear on console
+    CLibrary.INSTANCE.printf("Hello World: %d\n", 321);
+    // But sprintf works as expected
+    byte[] buffer = new byte[100];
+    CLibrary.INSTANCE.sprintf(buffer, "Hello World %d\n", 123);
+    String string = Native.toString(buffer);
+    System.out.print(string);
   }
 
 }
