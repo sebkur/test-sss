@@ -7,3 +7,6 @@ using JNA in [java](java):
 * [Getting Started](java/getting-started): a minimal example on using JNA as
   explained here: https://github.com/java-native-access/jna/blob/master/www/GettingStarted.md
 * [Sandbox](java/sandbox): a sandbox for testing JNA functionality
+
+The next step is to get everything running from within Android apps.
+There's an [Android testing project](android) for that.
