@@ -15,24 +15,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-  public interface CLibrary extends Library {
-
-    CLibrary INSTANCE = Native.load(("c"), CLibrary.class);
-
-    void printf(String format, Object... args);
-
-    void sprintf(byte[] buffer, String format, Object... args);
-
-  }
-
-  public interface OurLibrary extends Library {
-
-    OurLibrary INSTANCE = Native.load(("native-lib"), OurLibrary.class);
-
-    void foo(byte[] buffer);
-
-  }
-
   public interface LibSSS extends Library {
 
     LibSSS INSTANCE = Native.load("sss", LibSSS.class);
@@ -85,10 +67,6 @@ public class MainActivity extends AppCompatActivity {
     for (int i = 0; i < n; i++) {
       secrets.add(String.format("secret %d: %s", i + 1, text));
 
-      byte[] buffer = new byte[100];
-      OurLibrary.INSTANCE.foo(buffer);
-      secrets.add(Native.toString(buffer));
-
       byte[] share = getShare(shares, i);
       secrets.add(toString(share));
     }
@@ -129,14 +107,6 @@ public class MainActivity extends AppCompatActivity {
       layout.addView(textView);
       textViewsSecrets.add(textView);
     }
-
-    // Interesting, printf doesn't appear on console
-    CLibrary.INSTANCE.printf("Hello World: %d\n", 321);
-    // But sprintf works as expected
-    byte[] buffer = new byte[100];
-    CLibrary.INSTANCE.sprintf(buffer, "Hello World %d\n", 123);
-    String string = Native.toString(buffer);
-    System.out.print(string);
   }
 
 }
