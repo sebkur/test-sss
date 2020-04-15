@@ -25,6 +25,14 @@ public class MainActivity extends AppCompatActivity {
 
   }
 
+  public interface OurLibrary extends Library {
+
+    OurLibrary INSTANCE = Native.load(("native-lib"), OurLibrary.class);
+
+    void foo(byte[] buffer);
+
+  }
+
   @Override
   protected void onCreate(Bundle savedInstanceState)
   {
@@ -75,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     // But sprintf works as expected
     byte[] buffer = new byte[100];
     CLibrary.INSTANCE.sprintf(buffer, "Hello World %d\n", 123);
+    OurLibrary.INSTANCE.foo(buffer);
     String string = Native.toString(buffer);
     System.out.print(string);
   }
