@@ -56,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
     List<String> secrets = new ArrayList<>();
     for (int i = 0; i < 3; i++) {
       secrets.add(String.format("secret %d: %s", i + 1, text));
+
+      byte[] buffer = new byte[100];
+      OurLibrary.INSTANCE.foo(buffer);
+      secrets.add(Native.toString(buffer));
     }
     System.out.println("done");
     return secrets;
@@ -83,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
     // But sprintf works as expected
     byte[] buffer = new byte[100];
     CLibrary.INSTANCE.sprintf(buffer, "Hello World %d\n", 123);
-    OurLibrary.INSTANCE.foo(buffer);
     String string = Native.toString(buffer);
     System.out.print(string);
   }
