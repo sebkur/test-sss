@@ -50,7 +50,7 @@ public class MainActivity extends FragmentActivity {
       if (position == 0) {
         return new SSSFragment();
       } else {
-        return new SSSFragment();
+        return new HazmatFragment();
       }
     }
 
