@@ -26,11 +26,6 @@ public class MainActivity extends AppCompatActivity {
     void sss_combine_shares(byte[] data, byte[] shares, int k);
   }
 
-  public static final int KEYSHARE_LEN = 33;
-  public static final int MLEN = 64;
-  public static final int CLEN = MLEN + 16;
-  public static final int SHARE_LEN = CLEN + KEYSHARE_LEN;
-
   @Override
   protected void onCreate(Bundle savedInstanceState)
   {
@@ -43,69 +38,70 @@ public class MainActivity extends AppCompatActivity {
     View button = findViewById(R.id.button);
     button.setOnClickListener(e -> {
       CharSequence text = input.getText();
-      List<String> secrets = computeSecrets(text);
+      List<byte[]> secrets = computeSecrets(text);
+      clearTextViews();
       displaySecrets(secrets);
+      byte[] recovered = recover(Util.pick(secrets, 0, 1));
+      addTextView("recovered text: " + new String(recovered));
     });
   }
 
-  private List<String> computeSecrets(CharSequence text)
+  private byte[] recover(List<byte[]> shares)
+  {
+    byte[] recovered = new byte[Shares.MLEN];
+    byte[] availableShares = Shares.concat(shares);
+    LibSSS.INSTANCE.sss_combine_shares(recovered, availableShares, shares.size());
+    return recovered;
+  }
+
+  private List<byte[]> computeSecrets(CharSequence text)
   {
     int n = 3;
     int k = 2;
 
+    String secret = "very secret information";
     System.out.println("computing secrets…");
 
-    byte[] data = new byte[MLEN];
-    for (int i = 0; i < data.length; i++) {
-      data[i] = (byte) i;
-    }
+    byte[] data = secret.getBytes();
 
-    byte[] shares = new byte[n * SHARE_LEN];
+    byte[] shares = new byte[n * Shares.SHARE_LEN];
     LibSSS.INSTANCE.sss_create_shares(shares, data, n, k);
 
-    List<String> secrets = new ArrayList<>();
+    List<byte[]> secrets = new ArrayList<>();
     for (int i = 0; i < n; i++) {
-      secrets.add(String.format("secret %d: %s", i + 1, text));
-
-      byte[] share = getShare(shares, i);
-      secrets.add(toString(share));
+      byte[] share = Shares.getShare(shares, i);
+      secrets.add(share);
     }
     System.out.println("done");
     return secrets;
   }
 
-  private static byte[] getShare(byte[] shares, int i)
-  {
-    byte[] share = new byte[SHARE_LEN];
-    System.arraycopy(shares, i * SHARE_LEN, share, 0, SHARE_LEN);
-    return share;
-  }
+  private List<TextView> textViews = new ArrayList<>();
 
-  private static String toString(byte[] share)
-  {
-    StringBuilder buffer = new StringBuilder();
-    for (int i = 0; i < share.length; i++) {
-      byte b = share[i];
-      buffer.append(String.format("%x", b));
-    }
-    return buffer.toString();
-  }
-
-  private List<TextView> textViewsSecrets = new ArrayList<>();
-
-  private void displaySecrets(List<String> secrets)
+  private void clearTextViews()
   {
     LinearLayout layout = findViewById(R.id.linearLayout);
-
-    for (TextView old : textViewsSecrets) {
+    for (TextView old : textViews) {
       layout.removeView(old);
     }
+  }
 
-    for (String secret : secrets) {
-      TextView textView = new TextView(this);
-      textView.setText(secret);
-      layout.addView(textView);
-      textViewsSecrets.add(textView);
+  private void addTextView(String text)
+  {
+    LinearLayout layout = findViewById(R.id.linearLayout);
+    TextView textView = new TextView(this);
+    layout.addView(textView);
+    textViews.add(textView);
+    textView.setText(text);
+  }
+
+  private void displaySecrets(List<byte[]> shares)
+  {
+    for (int i = 0; i < shares.size(); i++) {
+      byte[] share = shares.get(i);
+
+      String shareHex = Shares.toHexString(share);
+      addTextView(String.format("secret %d: %s", i + 1, shareHex));
     }
   }
 
