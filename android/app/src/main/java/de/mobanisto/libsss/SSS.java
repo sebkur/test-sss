@@ -21,8 +21,6 @@ public class SSS {
 
   public static List<byte[]> computeSecrets(String secret, int n, int k)
   {
-    System.out.println("computing secrets…");
-
     byte[] data = Shares.secret(secret);
 
     byte[] shares = new byte[n * Shares.SHARE_LEN];
@@ -33,7 +31,6 @@ public class SSS {
       byte[] share = Shares.getShare(shares, i);
       secrets.add(share);
     }
-    System.out.println("done");
     return secrets;
   }
 

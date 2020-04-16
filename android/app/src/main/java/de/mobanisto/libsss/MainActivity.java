@@ -24,12 +24,21 @@ public class MainActivity extends AppCompatActivity {
     View button = findViewById(R.id.button);
     button.setOnClickListener(e -> {
       CharSequence text = input.getText();
-      List<byte[]> secrets = SSS.computeSecrets(text.toString(), 3, 2);
-      clearTextViews();
-      displaySecrets(secrets);
-      byte[] recovered = SSS.recover(Util.pick(secrets, 0, 1));
-      addTextView("recovered text: " + new String(recovered));
+      cipherDecipherAndDisplay(text.toString());
     });
+  }
+
+  private void cipherDecipherAndDisplay(String secret)
+  {
+    System.out.println("computing secrets…");
+    List<byte[]> secrets = SSS.computeSecrets(secret, 3, 2);
+    System.out.println("done");
+
+    clearTextViews();
+    displaySecrets(secrets);
+
+    byte[] recovered = SSS.recover(Util.pick(secrets, 0, 1));
+    addTextView("recovered text: " + new String(recovered));
   }
 
   private List<TextView> textViews = new ArrayList<>();
