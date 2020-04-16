@@ -17,8 +17,11 @@ public class SSS {
 
     LibSSS INSTANCE = Native.load("sss", LibSSS.class);
 
-    // would like to use byte[][] out but only one-dimensional arrays
-    // are supported by JNA
+    // We would prefer to use byte[][] out and byte[][] shares, however
+    // only one-dimensional arrays are supported by JNA. Hence we
+    // convert between two-dimensional arrays and one-dimensional
+    // arrays and vice versa between the Java and the native layer.
+
     void sss_create_shares(byte[] out, byte[] data, int n, int k);
 
     void sss_combine_shares(byte[] data, byte[] shares, int k);
