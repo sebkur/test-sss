@@ -19,6 +19,20 @@ public class Shares {
   }
 
   /**
+   * From array of keysshares encoded in a 1-dimensional array, get the i'th keyshare.
+   *
+   * @param shares the 1-dimensional array
+   * @param i      the index of the keyshare to get
+   * @return the keyshare extracted from the array.
+   */
+  public static byte[] getKeyshare(byte[] shares, int i)
+  {
+    byte[] share = new byte[SSS.KEYSHARE_LEN];
+    System.arraycopy(shares, i * SSS.KEYSHARE_LEN, share, 0, SSS.KEYSHARE_LEN);
+    return share;
+  }
+
+  /**
    * Concatenate a list of shares into a 1-dimensional array.
    *
    * @param shares the list of shares to combine

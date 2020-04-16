@@ -52,4 +52,25 @@ public class SSS {
     return recovered;
   }
 
+  public static List<byte[]> createKeyshares(byte[] data, int n, int k)
+  {
+    byte[] flatShares = new byte[n * KEYSHARE_LEN];
+    LibSSS.INSTANCE.sss_create_keyshares(flatShares, data, n, k);
+
+    List<byte[]> shares = new ArrayList<>();
+    for (int i = 0; i < n; i++) {
+      byte[] share = Shares.getKeyshare(flatShares, i);
+      shares.add(share);
+    }
+    return shares;
+  }
+
+  public static byte[] combineKeyshares(List<byte[]> shares)
+  {
+    byte[] recovered = new byte[KEYSHARE_LEN - 1];
+    byte[] availableShares = Shares.concat(shares);
+    LibSSS.INSTANCE.sss_combine_keyshares(recovered, availableShares, shares.size());
+    return recovered;
+  }
+
 }
