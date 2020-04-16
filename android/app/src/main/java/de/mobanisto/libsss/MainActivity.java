@@ -1,16 +1,20 @@
 package de.mobanisto.libsss;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
-import java.util.ArrayList;
-import java.util.List;
+public class MainActivity extends FragmentActivity {
 
-public class MainActivity extends AppCompatActivity {
+  private static final int NUM_PAGES = 2;
+
+  private ViewPager mPager;
+
+  private androidx.viewpager.widget.PagerAdapter pagerAdapter;
 
   @Override
   protected void onCreate(Bundle savedInstanceState)
@@ -18,58 +22,44 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    TextView input = findViewById(R.id.input);
-    input.setText("very secret information");
-
-    View button = findViewById(R.id.button);
-    button.setOnClickListener(e -> {
-      CharSequence text = input.getText();
-      cipherDecipherAndDisplay(text.toString());
-    });
+    mPager = findViewById(R.id.pager);
+    pagerAdapter = new PagerAdapter(getSupportFragmentManager());
+    mPager.setAdapter(pagerAdapter);
   }
 
-  private void cipherDecipherAndDisplay(String secretText)
+  @Override
+  public void onBackPressed()
   {
-    System.out.println("computing shares…");
-    byte[] secret = Secrets.create(secretText);
-
-    List<byte[]> shares = SSS.createShares(secret, 3, 2);
-    System.out.println("done");
-
-    clearTextViews();
-    displayShares(shares);
-
-    byte[] recovered = SSS.combineShares(Util.pick(shares, 0, 1));
-    addTextView("recovered secret: " + new String(recovered));
-  }
-
-  private List<TextView> textViews = new ArrayList<>();
-
-  private void clearTextViews()
-  {
-    LinearLayout layout = findViewById(R.id.linearLayout);
-    for (TextView old : textViews) {
-      layout.removeView(old);
+    if (mPager.getCurrentItem() == 0) {
+      super.onBackPressed();
+    } else {
+      mPager.setCurrentItem(mPager.getCurrentItem() - 1);
     }
   }
 
-  private void addTextView(String text)
-  {
-    LinearLayout layout = findViewById(R.id.linearLayout);
-    TextView textView = new TextView(this);
-    layout.addView(textView);
-    textViews.add(textView);
-    textView.setText(text);
-  }
+  private class PagerAdapter extends FragmentStatePagerAdapter {
 
-  private void displayShares(List<byte[]> shares)
-  {
-    for (int i = 0; i < shares.size(); i++) {
-      byte[] share = shares.get(i);
-
-      String shareHex = Shares.toHexString(share);
-      addTextView(String.format("share %d: %s", i + 1, shareHex));
+    public PagerAdapter(FragmentManager fm)
+    {
+      super(fm);
     }
+
+    @Override
+    public Fragment getItem(int position)
+    {
+      if (position == 0) {
+        return new SSSFragment();
+      } else {
+        return new SSSFragment();
+      }
+    }
+
+    @Override
+    public int getCount()
+    {
+      return NUM_PAGES;
+    }
+
   }
 
 }
