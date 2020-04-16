@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     String secret = "very secret information";
     System.out.println("computing secrets…");
 
-    byte[] data = secret.getBytes();
+    byte[] data = Shares.secret(secret);
 
     byte[] shares = new byte[n * Shares.SHARE_LEN];
     LibSSS.INSTANCE.sss_create_shares(shares, data, n, k);

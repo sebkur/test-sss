@@ -43,4 +43,12 @@ public class Shares {
     return buffer.toString();
   }
 
+  public static byte[] secret(String secret)
+  {
+    byte[] data = new byte[MLEN];
+    byte[] stringBytes = secret.getBytes();
+    int len = Math.min(data.length, stringBytes.length);
+    System.arraycopy(stringBytes, 0, data, 0, len);
+    return data;
+  }
 }
