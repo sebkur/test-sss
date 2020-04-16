@@ -28,17 +28,19 @@ public class MainActivity extends AppCompatActivity {
     });
   }
 
-  private void cipherDecipherAndDisplay(String secret)
+  private void cipherDecipherAndDisplay(String secretText)
   {
-    System.out.println("computing secrets…");
-    List<byte[]> secrets = SSS.computeSecrets(secret, 3, 2);
+    System.out.println("computing shares…");
+    byte[] secret = Secrets.create(secretText);
+
+    List<byte[]> shares = SSS.createShares(secret, 3, 2);
     System.out.println("done");
 
     clearTextViews();
-    displaySecrets(secrets);
+    displayShares(shares);
 
-    byte[] recovered = SSS.recover(Util.pick(secrets, 0, 1));
-    addTextView("recovered text: " + new String(recovered));
+    byte[] recovered = SSS.combineShares(Util.pick(shares, 0, 1));
+    addTextView("recovered secret: " + new String(recovered));
   }
 
   private List<TextView> textViews = new ArrayList<>();
@@ -60,13 +62,13 @@ public class MainActivity extends AppCompatActivity {
     textView.setText(text);
   }
 
-  private void displaySecrets(List<byte[]> shares)
+  private void displayShares(List<byte[]> shares)
   {
     for (int i = 0; i < shares.size(); i++) {
       byte[] share = shares.get(i);
 
       String shareHex = Shares.toHexString(share);
-      addTextView(String.format("secret %d: %s", i + 1, shareHex));
+      addTextView(String.format("share %d: %s", i + 1, shareHex));
     }
   }
 

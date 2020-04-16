@@ -4,18 +4,26 @@ import java.util.List;
 
 public class Shares {
 
-  public static final int KEYSHARE_LEN = 33;
-  public static final int MLEN = 64;
-  public static final int CLEN = MLEN + 16;
-  public static final int SHARE_LEN = CLEN + KEYSHARE_LEN;
-
+  /**
+   * From array of shares encoded in a 1-dimensional array, get the i'th share.
+   *
+   * @param shares the 1-dimensional array
+   * @param i      the index of the share to get
+   * @return the share extracted from the array.
+   */
   public static byte[] getShare(byte[] shares, int i)
   {
-    byte[] share = new byte[SHARE_LEN];
-    System.arraycopy(shares, i * SHARE_LEN, share, 0, SHARE_LEN);
+    byte[] share = new byte[SSS.SHARE_LEN];
+    System.arraycopy(shares, i * SSS.SHARE_LEN, share, 0, SSS.SHARE_LEN);
     return share;
   }
 
+  /**
+   * Concatenate a list of shares into a 1-dimensional array.
+   *
+   * @param shares the list of shares to combine
+   * @return an array containing the data of all shares.
+   */
   public static byte[] concat(List<byte[]> shares)
   {
     int total = 0;
@@ -33,6 +41,12 @@ public class Shares {
     return result;
   }
 
+  /**
+   * Get a hexadecimal string representation of the specified share.
+   *
+   * @param share the share to convert to a string
+   * @return a string that displays raw data bytes as human-readable hexadecimal values.
+   */
   public static String toHexString(byte[] share)
   {
     StringBuilder buffer = new StringBuilder();
@@ -43,12 +57,4 @@ public class Shares {
     return buffer.toString();
   }
 
-  public static byte[] secret(String secret)
-  {
-    byte[] data = new byte[MLEN];
-    byte[] stringBytes = secret.getBytes();
-    int len = Math.min(data.length, stringBytes.length);
-    System.arraycopy(stringBytes, 0, data, 0, len);
-    return data;
-  }
 }
