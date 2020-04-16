@@ -1,5 +1,14 @@
 apply plugin: 'com.android.application'
 
+def securePropertiesFile = rootProject.file("secure.properties");
+def secureProperties = null
+if (!securePropertiesFile.exists()) {
+    println "Please add a signing configuration in " + securePropertiesFile
+} else {
+    secureProperties = new Properties()
+    secureProperties.load(new FileInputStream(securePropertiesFile))
+}
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -20,10 +29,22 @@ android {
         }
     }
 
+    signingConfigs {
+        release {
+            if (secureProperties != null) {
+                storeFile file(secureProperties['storeFile'])
+                storePassword secureProperties['storePassword']
+                keyAlias secureProperties['keyAlias']
+                keyPassword secureProperties['keyPassword']
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 
