@@ -30,3 +30,7 @@ Then the APK is available here:
 
     app/build/outputs/apk/release/app-release.apk
 
+You can install the APK files using adb like this:
+
+    adb install -r app/build/outputs/apk/debug/app-debug.apk
+    adb install -r app/build/outputs/apk/release/app-release.apk
