@@ -26,6 +26,9 @@ public class SSS {
 
     void sss_combine_shares(byte[] data, byte[] shares, int k);
 
+    void sss_create_keyshares(byte[] out, byte[] key, int n, int k);
+
+    void sss_combine_keyshares(byte[] key, byte[] shares, int k);
   }
 
   public static List<byte[]> createShares(byte[] data, int n, int k)
