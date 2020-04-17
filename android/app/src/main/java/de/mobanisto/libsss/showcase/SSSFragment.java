@@ -1,4 +1,4 @@
-package de.mobanisto.libsss;
+package de.mobanisto.libsss.showcase;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,7 +13,11 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HazmatFragment extends Fragment {
+import de.mobanisto.libsss.SSS;
+import de.mobanisto.libsss.Secrets;
+import de.mobanisto.libsss.Shares;
+
+public class SSSFragment extends Fragment {
 
   private LinearLayout layout;
 
@@ -22,7 +26,7 @@ public class HazmatFragment extends Fragment {
                            Bundle savedInstanceState)
   {
     ViewGroup rootView = (ViewGroup) inflater.inflate(
-        R.layout.fragment_hazmat, container, false);
+        R.layout.fragment_sss, container, false);
     return rootView;
   }
 
@@ -46,13 +50,13 @@ public class HazmatFragment extends Fragment {
     System.out.println("computing shares…");
     byte[] secret = Secrets.create(secretText);
 
-    List<byte[]> shares = SSS.createKeyshares(secret, 3, 2);
+    List<byte[]> shares = SSS.createShares(secret, 3, 2);
     System.out.println("done");
 
     clearTextViews();
     displayShares(shares);
 
-    byte[] recovered = SSS.combineKeyshares(Util.pick(shares, 0, 1));
+    byte[] recovered = SSS.combineShares(Util.pick(shares, 0, 1));
     addTextView("recovered secret: " + new String(recovered));
   }
 

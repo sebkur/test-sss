@@ -1,4 +1,4 @@
-package de.mobanisto.libsss;
+package de.mobanisto.libsss.showcase;
 
 import java.util.ArrayList;
 import java.util.List;
