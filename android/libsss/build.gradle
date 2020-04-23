@@ -100,6 +100,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 }
 
 artifacts {
+    // TODO: make Javadoc publishing work
     //archives javadocJar
     archives sourcesJar
 }
