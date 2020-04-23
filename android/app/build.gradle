@@ -52,7 +52,7 @@ android {
 }
 
 dependencies {
-    implementation project(':libsss')
+    implementation project(':shamir-secret-sharing-jna')
 
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
