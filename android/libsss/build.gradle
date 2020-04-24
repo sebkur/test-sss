@@ -63,7 +63,7 @@ ext {
     bintrayRepo = 'maven'
     bintrayName = 'sss-jna'
 
-    publishedGroupId = 'com.mobanisto'
+    publishedGroupId = 'com.mobanisto.sss'
     libraryName = 'Shamir secret sharing JNA'
 
     libraryDescription = 'JNA port of the SSS C library'
