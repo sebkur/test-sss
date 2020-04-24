@@ -1,5 +1,5 @@
 rootProject.name='LibSSS'
 include ':app'
 include ':libsss'
-project(':app').name = 'sss sample app'
+project(':app').name = 'sss-sample-app'
 project(':libsss').name = 'shamir-secret-sharing-jna'

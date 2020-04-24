@@ -31,7 +31,7 @@ To build a debug APK, execute this:
 
 The APK file will then be available at:
 
-    app/build/outputs/apk/debug/app-debug.apk
+    app/build/outputs/apk/debug/sss-sample-app-debug.apk
 
 In order to build a release APK, make sure to have signing set up.
 
@@ -51,9 +51,9 @@ Then you can execute this:
 
 Then the APK is available here:
 
-    app/build/outputs/apk/release/app-release.apk
+    app/build/outputs/apk/release/sss-sample-app-release.apk
 
 You can install the APK files using adb like this:
 
-    adb install -r app/build/outputs/apk/debug/app-debug.apk
-    adb install -r app/build/outputs/apk/release/app-release.apk
+    adb install -r app/build/outputs/apk/debug/sss-sample-app-debug.apk
+    adb install -r app/build/outputs/apk/release/sss-sample-app-release.apk
