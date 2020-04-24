@@ -10,6 +10,7 @@ buildscript {
     dependencies {
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath 'commons-io:commons-io:2.6'
     }
 }
 
@@ -89,9 +90,56 @@ task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
 }
 
+// Derived from answers to this StackOverflow post:
+// https://stackoverflow.com/questions/35853906/how-to-generate-javadoc-for-android-library-when-it-has-dependencies-which-are-a
 task javadoc(type: Javadoc) {
     source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+
+    configurations.implementation.setCanBeResolved(true)
+    classpath += configurations.implementation
+
+    afterEvaluate {
+        // Wait after evaluation to add the android classpath
+        // to avoid "buildToolsVersion is not specified" error
+        classpath += files(android.getBootClasspath())
+
+        // Process AAR dependencies
+        def aarDependencies = classpath.filter { it.name.endsWith('.aar') }
+        classpath -= aarDependencies
+        aarDependencies.each { aar ->
+            // Extract classes.jar from the AAR dependency, and add it to the javadoc classpath
+            def outputPath = "$buildDir/tmp/exploded-aar/${aar.name.replace('.aar', '.jar')}"
+            classpath += files(outputPath)
+
+            // Use a task so the actual extraction only happens before the javadoc task is run
+            dependsOn task(name: "extract ${aar.name}").doLast {
+                extractEntry(aar, 'classes.jar', outputPath)
+            }
+        }
+    }
+}
+
+// Utility method to extract only one entry in a zip file
+private def extractEntry(archive, entryPath, outputPath) {
+    if (!archive.exists()) {
+        throw new GradleException("archive $archive not found")
+    }
+
+    def zip = new java.util.zip.ZipFile(archive)
+
+    zip.entries().each {
+        if (it.name == entryPath) {
+            def path = new File(outputPath)
+
+            if (!path.exists()) {
+                path.getParentFile().mkdirs()
+
+                def is = zip.getInputStream(it)
+                org.apache.commons.io.FileUtils.copyInputStreamToFile(is, path);
+            }
+        }
+    }
+    zip.close()
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
@@ -101,7 +149,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 
 artifacts {
     // TODO: make Javadoc publishing work
-    //archives javadocJar
+    archives javadocJar
     archives sourcesJar
 }
 
