@@ -52,7 +52,7 @@ android {
 }
 
 dependencies {
-    implementation project(':shamir-secret-sharing-jna')
+    implementation 'com.mobanisto.sss:shamir-secret-sharing-jna:0.0.1'
 
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
