@@ -1,25 +1,7 @@
 # Android project
 
-## Library
-
-To upload the library part to jcenter, prepare as follows.
-
-Create a file `local.properties` in the root directory with content:
-
-    bintray.user=your-username
-    bintray.apikey=your-api-key
-
-In file `libsss/build.gradle`, adapt values in the `ext` stanza.
-In particular set the `libraryVersion` variable when uploading a
-new version, but also adapt for example `bintrayOrg` or `publishedGroupId`
-if you want to publish to a different jcenter repository or with
-different Maven coordinates.
-
-Then run:
-
-    ./gradlew install bintrayUpload
-
-to generate all release files and upload them to jcenter automatically.
+This Android project uses a published version of the JNA wrapper library
+for the SSS C library.
 
 ## Sample application
 
