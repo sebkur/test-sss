@@ -77,7 +77,7 @@ public class Shares
 		StringBuilder buffer = new StringBuilder();
 		for (int i = 0; i < share.length; i++) {
 			byte b = share[i];
-			buffer.append(String.format("%x", b));
+			buffer.append(String.format("%02x", b));
 		}
 		return buffer.toString();
 	}
