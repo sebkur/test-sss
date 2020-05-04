@@ -10,3 +10,6 @@ using JNA in [java](java):
 
 The next step is to get everything running from within Android apps.
 There's an [Android testing project](android) for that.
+
+There's also [an attempt](renjin/java) to compile the C library to JVM bytecode using
+[Renjin](https://github.com/bedatadriven/renjin)'s [GCC-Bridge](https://github.com/bedatadriven/renjin/tree/master/tools/gcc-bridge).
