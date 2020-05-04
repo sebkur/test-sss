@@ -1,0 +1,7 @@
+#!/bin/bash
+
+DIR=$(dirname $0)
+CMD="$DIR/renjin-sss.sh"
+CLASS="de.mobanisto.sss.renjin.Test"
+
+exec "$CMD" "$CLASS" "$@"
