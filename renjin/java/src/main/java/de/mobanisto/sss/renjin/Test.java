@@ -1,7 +1,8 @@
 package de.mobanisto.sss.renjin;
 
-import org.renjin.gcc.example.Example;
 import org.renjin.gcc.runtime.BytePtr;
+
+import de.mobanisto.sss.SssGcc;
 
 public class Test
 {
@@ -22,7 +23,7 @@ public class Test
 
 		BytePtr rshares = new BytePtr(shares);
 		BytePtr rdata = new BytePtr(data);
-		Example.sss_create_shares(rshares, rdata, (byte) n, (byte) k);
+		SssGcc.sss_create_shares(rshares, rdata, (byte) n, (byte) k);
 
 		for (int i = 0; i < n; i++) {
 			byte[] share = Shares.getShare(shares, i);
@@ -31,7 +32,7 @@ public class Test
 
 		byte[] recovered = new byte[SSS.MLEN];
 		BytePtr rrecovered = new BytePtr(recovered);
-		Example.sss_combine_shares(rrecovered, rshares, (byte) 2);
+		SssGcc.sss_combine_shares(rrecovered, rshares, (byte) 2);
 
 		System.out.println(Shares.toHexString(recovered));
 	}

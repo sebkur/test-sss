@@ -1,4 +1,4 @@
-package org.renjin.gcc.example;
+package de.mobanisto.sss;
 
 import java.security.SecureRandom;
 
