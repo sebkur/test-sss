@@ -1,0 +1,3 @@
+rootProject.name='LibSSS-GCC-Bridge'
+include ':app'
+project(':app').name = 'sss-sample-app'
