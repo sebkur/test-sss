@@ -2,9 +2,11 @@ package de.mobanisto.sss.renjin;
 
 import org.renjin.gcc.runtime.BytePtr;
 
+import de.mobanisto.sss.SSS;
+import de.mobanisto.sss.Shares;
 import de.mobanisto.sss.SssGcc;
 
-public class Test
+public class TestLowlevel
 {
 
 	public static void main(String[] args)

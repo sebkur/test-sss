@@ -2,6 +2,6 @@
 
 DIR=$(dirname $0)
 CMD="$DIR/renjin-sss.sh"
-CLASS="de.mobanisto.sss.renjin.Test"
+CLASS="de.mobanisto.sss.renjin.TestHighlevel"
 
 exec "$CMD" "$CLASS" "$@"
