@@ -10,12 +10,12 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import org.magmacollective.libsss.SSS;
+import org.magmacollective.libsss.Secrets;
+import org.magmacollective.libsss.Shares;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import de.mobanisto.libsss.SSS;
-import de.mobanisto.libsss.Secrets;
-import de.mobanisto.libsss.Shares;
 
 public class SSSFragment extends Fragment {
 
